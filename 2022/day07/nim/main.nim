@@ -1,5 +1,5 @@
 import std/strutils
-import std/[times, deques, tables]
+import std/[times, tables]
 
 
 proc seqToString(s: seq[string]): string =
