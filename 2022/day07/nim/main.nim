@@ -62,6 +62,8 @@ let data = readFile("../input.txt").splitLines()
 
 var dirs = getDirSizes(data)
 
+echo dirs
+
 echo "The solution to part 1 is: ", p1(dirs)
 echo "The solution to part 2 is: ", p2(dirs)      
 
@@ -69,4 +71,4 @@ let elapsed = (epochTime() - t0) * 1000
 let elapsedStr = elapsed.formatFloat(format = ffDecimal, precision = 3)
 echo "CPU Time: ", elapsedStr, "ms"
 
-# nim c -r -d:release -d:danger main.nim
+# nim c -r -d:release -d:danger main.nim 

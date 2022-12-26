@@ -1,51 +1,93 @@
-// package main
+package main
 
-// import (
-// 	"fmt"
-// 	"io/ioutil"
-// 	"strings"
-// 	"time"
-// )
+import (
+	"fmt"
+	"io/ioutil"
+	"strconv"
+	"strings"
+	"time"
+)
 
-// func p1(data string, n int) int {
+func getDirSizes(data []string) map[string]int {
 
-// 	var mark []string
+	var path []string
+	var slash string = "/"
+	dirs := make(map[string]int)
 
-// 	for i := 0; i < len(data); i++ {
-// 		var x string = string(data[i])
+	for _, instr := range data {
+		parts := strings.Split(instr, " ")
 
-// 		mark = append(mark, x)
+		if parts[0] == "$" && parts[1] == "cd" && parts[2] == "/" {
+			path = nil
+			path = append(path, slash)
+		} else if parts[0] == "$" && parts[1] == "cd" && parts[2] == ".." {
+			path = path[:len(path)-1]
+		} else if parts[0] == "$" && parts[1] == "cd" {
+			path = append(path, parts[2]+slash)
+		} else if parts[0] == "$" && parts[1] == "ls" {
+			continue
+		} else if parts[0] == "dir" {
+			continue
+		} else {
+			size, _ := strconv.Atoi(parts[0])
+			l := len(path)
 
-// 		if len(mark) == n && i != len(data)-1 {
-// 			set := map[string]bool{}
+			if size >= 0 {
+				for i := l - 1; i >= 0; i-- {
+					pth := strings.Join(path[0:i+1], "")
+					_, ok := dirs[pth]
+					if ok {
+						dirs[pth] += size
+					} else {
+						dirs[pth] = size
+					}
 
-// 			for j := 0; j < n; j++ {
-// 				set[mark[j]] = true
-// 			}
+				}
+			}
+		}
+	}
 
-// 			if len(set) == n {
-// 				return i + 1
-// 			}
+	return dirs
+}
 
-// 			mark = mark[1:n]
-// 		}
-// 	}
+func p1(dirs map[string]int) int {
+	var sum int = 0
+	for _, val := range dirs {
+		if val <= 100000 {
+			sum += val
+		}
+	}
+	return sum
+}
 
-// 	return -99
-// }
+func p2(dirs map[string]int) int {
+	var min int = 999999999
+	for _, val := range dirs {
+		if dirs["/"]-val < 40000000 {
+			if val < min {
+				min = val
+			}
+		}
+	}
+	return min
+}
 
-// func main() {
-// 	start := time.Now()
+func main() {
+	start := time.Now()
 
-// 	bs, _ := ioutil.ReadFile("../input.txt")
-// 	input := strings.Split(string(bs), "\n")[0]
+	bs, _ := ioutil.ReadFile("../input.txt")
+	input := strings.Split(string(bs), "\n")
 
-// 	fmt.Println("The solution to part 1 is: ", p1(input, 4))
-// 	fmt.Println("The solution to part 2 is: ", p1(input, 14))
+	dirs := getDirSizes(input)
 
-// 	end := time.Since(start)
-// 	fmt.Println("Time: ", end)
+	fmt.Println(dirs)
 
-// }
+	fmt.Println("The solution to part 1 is: ", p1(dirs))
+	fmt.Println("The solution to part 2 is: ", p2(dirs))
 
-// // go run ../go/main.go
+	end := time.Since(start)
+	fmt.Println("Time: ", end)
+
+}
+
+// go run ../go/main.go
