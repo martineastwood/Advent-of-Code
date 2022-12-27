@@ -28,7 +28,6 @@ func loadInput(path string) [][]int {
 }
 
 func p1(data [][]int) int {
-	var sum int = 0
 	var n_rows = len(data)
 	var n_cols = len(data[0])
 	var visible []int
@@ -53,11 +52,50 @@ func p1(data [][]int) int {
 				continue
 			}
 
-			fmt.Println(row)
+			// check left
+			visible_left := true
+			for k := 0; k < j; k++ {
+				if row[k] >= row[j] {
+					visible_left = false
+					break
+				}
+			}
+
+			// check right
+			visible_right := true
+			for k := j + 1; k < n_cols; k++ {
+				if row[k] >= row[j] {
+					visible_right = false
+					break
+				}
+			}
+
+			// check up
+			visible_up := true
+			for k := 0; k < i; k++ {
+				if col[k] >= row[j] {
+					visible_up = false
+					break
+				}
+			}
+
+			// check down
+			visible_down := true
+			for k := i + 1; k <= n_cols-1; k++ {
+				if col[k] >= row[j] {
+					visible_down = false
+					break
+				}
+			}
+
+			if visible_left || visible_right || visible_up || visible_down {
+				visible = append(visible, data[i][j])
+			}
+
 		}
 	}
 
-	return sum
+	return len(visible)
 }
 
 func p2(dirs map[string]int) int {
