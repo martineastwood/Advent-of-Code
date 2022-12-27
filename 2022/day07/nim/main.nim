@@ -62,8 +62,6 @@ let data = readFile("../input.txt").splitLines()
 
 var dirs = getDirSizes(data)
 
-echo dirs
-
 echo "The solution to part 1 is: ", p1(dirs)
 echo "The solution to part 2 is: ", p2(dirs)      
 
