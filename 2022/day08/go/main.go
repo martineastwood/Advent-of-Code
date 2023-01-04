@@ -98,19 +98,12 @@ func p1(data [][]int) int {
 	return len(visible)
 }
 
-func p2(dirs map[string]int) int {
-	var min int = 999999999
-
-	return min
-}
-
 func main() {
 	start := time.Now()
 
 	input := loadInput("../input.txt")
 
 	fmt.Println("The solution to part 1 is: ", p1(input))
-	// fmt.Println("The solution to part 2 is: ", p2(dirs))
 
 	end := time.Since(start)
 	fmt.Println("Time: ", end)
